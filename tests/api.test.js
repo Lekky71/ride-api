@@ -43,7 +43,7 @@ describe('API tests', () => {
   });
 
   describe('GET /api-docs', () => {
-    it('should return health', (done) => {
+    it('should return 200 for api-docs', (done) => {
       request(app)
         .get('/api-docs')
         .expect('Content-Type', /text/)
