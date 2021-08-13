@@ -6,9 +6,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 
+const logger = require('./logger');
+
 const swaggerDocument = YAML.load(`${__dirname.replace('/src', '')}/document.yaml`);
 
 const jsonParser = bodyParser.json();
+
+this.lastID = 0;
 
 module.exports = (db) => {
   app.get('/health', (req, res) => res.send('Healthy'));
@@ -71,43 +75,63 @@ module.exports = (db) => {
           message: 'Unknown error',
         });
       }
+      this.lastID += 1;
 
-      return db.all('SELECT * FROM Rides WHERE rideID = ?', this.lastID, (err1, rows) => {
+      return db.all('SELECT * FROM Rides WHERE rideID = ? LIMIT 1', this.lastID, (err1, rows) => {
         if (err1) {
           return res.send({
             error_code: 'SERVER_ERROR',
             message: 'Unknown error',
           });
         }
-
-        return res.send(rows);
+        return res.send(rows[0]);
       });
     });
   });
 
   app.get('/rides', (req, res) => {
-    db.all('SELECT * FROM Rides', (err, rows) => {
+    const page = Number(req.query.page || 1);
+    const size = Number(req.query.size || 20);
+    db.all('SELECT COUNT(*) FROM Rides;', (err, countRows) => {
       if (err) {
+        logger.error(err);
         return res.send({
           error_code: 'SERVER_ERROR',
           message: 'Unknown error',
         });
       }
-
-      if (rows.length === 0) {
+      const totalCount = countRows[0]['COUNT(*)'];
+      if (totalCount === 0) {
         return res.send({
           error_code: 'RIDES_NOT_FOUND_ERROR',
           message: 'Could not find any rides',
         });
       }
+      return db.all(`SELECT * FROM Rides LIMIT ${size} OFFSET ${(page * size) - size}`, (err1, rows) => {
+        if (err1) {
+          logger.error(err1);
+          return res.send({
+            error_code: 'SERVER_ERROR',
+            message: 'Unknown error',
+          });
+        }
 
-      return res.send(rows);
+        return res.send({
+          page,
+          size,
+          nextPage: (rows.length * page) < totalCount ? page + 1 : null,
+          totalCount,
+          count: rows.length,
+          rides: rows,
+        });
+      });
     });
   });
 
   app.get('/rides/:id', (req, res) => {
-    db.all(`SELECT * FROM Rides WHERE rideID='${req.params.id}'`, (err, rows) => {
+    db.all(`SELECT * FROM Rides WHERE rideID=${Number(req.params.id)} LIMIT 1`, (err, rows) => {
       if (err) {
+        logger.error(err);
         return res.send({
           error_code: 'SERVER_ERROR',
           message: 'Unknown error',
@@ -121,7 +145,7 @@ module.exports = (db) => {
         });
       }
 
-      return res.send(rows);
+      return res.send(rows[0]);
     });
   });
 

@@ -192,15 +192,21 @@ components:
     RideResponse:
       type: object
       properties:
-        totalCount:
-          type: integer
-          example: 20
         page:
           type: integer
-          example: 2
+          example: 1
         size:
           type: integer
           example: 10
+        totalCount:
+          type: integer
+          example: 3
+        count:
+          type: integer
+          example: 1
+        nextPage:
+          type: integer
+          example: 2
         rides:
           type: array
           items:

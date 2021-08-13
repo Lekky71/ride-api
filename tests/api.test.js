@@ -3,6 +3,7 @@ const request = require('supertest');
 const assert = require('assert');
 
 const sqlite3 = require('sqlite3').verbose();
+const { expect } = require('chai');
 
 const db = new sqlite3.Database(':memory:');
 
@@ -109,6 +110,13 @@ describe('API tests', () => {
         });
     });
 
+    it('should return RIDES_NOT_FOUND_ERROR for no rides saved found', () => request(app)
+      .get('/rides')
+      .then((res) => {
+        expect(res.body).to.have.property('message');
+        assert.strictEqual(res.body.error_code, 'RIDES_NOT_FOUND_ERROR');
+      }));
+
     it('should return 200', () => request(app)
       .post('/rides')
       .send(testPayload)
@@ -121,15 +129,19 @@ describe('API tests', () => {
     it('should return saved rides', () => request(app)
       .get('/rides')
       .then((res) => {
-        assert.strictEqual(res.body.length, 1);
+        expect(res.body).to.have.property('page');
+        expect(res.body).to.have.property('size');
+        expect(res.body).to.have.property('totalCount');
+        expect(res.body).to.have.property('rides');
+        assert.strictEqual(res.body.rides.length, 1);
       }));
   });
 
   describe('GET /rides/:id', () => {
-    it('should return saved rides', () => request(app)
+    it('should return ride by its id', () => request(app)
       .get('/rides/1')
       .then((res) => {
-        assert.strictEqual(res.body[0].rideID, 1);
+        assert.strictEqual(res.body.rideID, 1);
       }));
   });
 });
