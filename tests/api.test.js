@@ -42,6 +42,15 @@ describe('API tests', () => {
     });
   });
 
+  describe('GET /api-docs', () => {
+    it('should return health', (done) => {
+      request(app)
+        .get('/api-docs')
+        .expect('Content-Type', /text/)
+        .expect(301, done);
+    });
+  });
+
   // Test validation error
   describe('POST /rides', () => {
     it('should return validation error for Start latitude and Longitude', () => {

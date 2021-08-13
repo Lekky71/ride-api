@@ -1,0 +1,216 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Oluwalekae/ride-api/1.0.0
+info:
+  description: "This is an API for storing ride data, you can save a ride's details, get all rides in the database, and get a particular die by its ID."
+  version: "1.0.0"
+  title: Ride Example API
+  contact:
+    email: hashilekky@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: users
+    description: Available to any user
+paths:
+  /rides:
+    get:
+      tags:
+        - users
+      summary: Get All Rides in the DB
+      operationId: getAllRides
+      description: |
+        Get all rides from the database
+      parameters:
+        - in: query
+          name: size
+          description: number of records per page for pagination
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - in: query
+          name: page
+          description: page
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideResponse'
+        '400':
+          description: Validation error, error_code is VALIDATION_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error, error_code is SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - users
+      summary: add a ride into the database
+      operationId: addRide
+      description: add a ride into the database
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ride'
+        '400':
+          description: Validation error, error_code is VALIDATION_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error, error_code is SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RideRequest'
+        description: Inventory item to add
+  /rides/{id}:
+    get:
+      tags:
+        - users
+      summary: Get a ride by its rideID
+      operationId: getRideById
+      description: |
+        Get all rides from the database
+      parameters:
+        - in: path
+          name: id
+          description: id of the ride to be fetched
+          required: true
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ride'
+        '400':
+          description: Validation error, error_code is VALIDATION_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error, error_code is SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    RideRequest:
+      type: object
+      required:
+        - start_lat
+        - start_long
+        - end_lat
+        - end_long
+        - rider_name
+        - driver_name
+        - driver_vehicle
+      properties:
+        start_lat:
+          type: number
+          example: -90
+        start_long:
+          type: number
+          example: -190
+        end_lat:
+          type: number
+          example: 90
+        end_long:
+          type: number
+          example: -90
+        rider_name:
+          type: string
+          example: 'Hashcode'
+        driver_name:
+          type: string
+          example: 'Leke'
+        driver_vehicle:
+          type: string
+          example: 'Benz'
+    Ride:
+      type: object
+      properties:
+        rideID:
+          type: number
+          example: 1
+        startLat:
+          type: number
+          example: -90
+        startLong:
+          type: number
+          example: -180
+        endLat:
+          type: number
+          example: 90
+        endLong:
+          type: number
+          example: 180
+        riderName:
+          type: string
+          example: 'Hashcode'
+        driverName:
+          type: string
+          example: 'Leke'
+        driverVehicle:
+          type: string
+          example: 'Benz'
+        created:
+          type: string
+          example: '2021-08-13 17:39:08'
+    RideResponse:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          example: 20
+        page:
+          type: integer
+          example: 2
+        size:
+          type: integer
+          example: 10
+        rides:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ride'
+    Error:
+      type: object
+      properties:
+        error_code:
+          type: string
+          example: 'ERROR_CODE'
+        message:
+          type: string
+          example: 'An error occurred'
