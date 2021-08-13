@@ -3,6 +3,7 @@ module.exports = {
     'coverage',
     'self-coverage',
     'tests/*',
+    'src/logger.js',
   ],
   branches: 80,
   functions: 80,
