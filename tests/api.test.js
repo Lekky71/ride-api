@@ -146,6 +146,11 @@ describe('API tests', () => {
   });
 
   describe('GET /rides/:id', () => {
+    it('should return error of invalid id', () => request(app)
+      .get('/rides/leke')
+      .then((res) => {
+        assert(res.body.error_code, VALIDATION_ERROR);
+      }));
     it('should return ride by its id', () => request(app)
       .get('/rides/1')
       .then((res) => {
