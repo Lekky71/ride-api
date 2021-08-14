@@ -42,6 +42,7 @@ module.exports = (db) => {
     const page = Number(req.query.page || 1);
     const size = Number(req.query.size || 20);
     try {
+      logger.info('Fetching all rides');
       const countRows = await db.all('SELECT COUNT(*) FROM Rides;');
       const totalCount = countRows[0]['COUNT(*)'];
       if (totalCount === 0) {
@@ -68,10 +69,10 @@ module.exports = (db) => {
       if (Number.isNaN(id) || !Number.isInteger(Number(id)) || Number(id) < 1) {
         return respondError(res, 400, 'Invalid id, must be an integer greater than 0');
       }
-
+      logger.info(`Fetching ride with id ${id}`);
       const rows = await db.all('SELECT * FROM Rides WHERE rideID = ? LIMIT 1', Number(id));
       if (rows.length === 0) {
-        return respondError(res, 404, 'Could not find the ride');
+        return respondError(res, 404, `Could not find the ride with id ${id}`);
       }
 
       return res.send(rows[0]);

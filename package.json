@@ -12,7 +12,8 @@
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
     "test": "DEBUG=true nyc mocha tests --exit --inspect=0.0.0.0:9229 --timeout 2000",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test:load": "forever start -m5 -a --uid='app' index.js && artillery run tests/artillery.test.yaml && forever stop app"
   },
   "keywords": [
     "Xendit"
@@ -20,7 +21,9 @@
   "author": "Bo",
   "license": "ISC",
   "resolutions": {
-    "node-gyp": "8.1.0"
+    "node-gyp": "8.1.0",
+    "glob-parent": "5.1.2",
+    "minimist": "1.2.5"
   },
   "dependencies": {
     "body-parser": "1.19.0",
@@ -33,10 +36,12 @@
     "yamljs": "0.3.0"
   },
   "devDependencies": {
+    "artillery": "1.7.6",
     "chai": "4.3.4",
     "eslint": "7.32.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-plugin-import": "2.24.0",
+    "forever": "4.0.1",
     "mocha": "9.0.3",
     "npm-force-resolutions": "0.0.10",
     "nyc": "15.1.0",
