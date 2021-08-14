@@ -1,3 +1,9 @@
 language: node_js
 node_js:
   - 10.24.1
+script:
+  - echo 'Installing dependencies'
+  - npm install
+  - npm run test
+  - npm install -g artillery forever
+  - npm run test:load

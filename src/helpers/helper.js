@@ -1,5 +1,6 @@
 const CustomError = require('./error');
 
+// DRY code to send error response
 const respondError = (res, errorCode, message = 'Unknown error') => {
   const errors = { 400: 'VALIDATION_ERROR', 404: 'RIDES_NOT_FOUND_ERROR', 500: 'SERVER_ERROR' };
   return res.status(errorCode).send({
@@ -7,7 +8,10 @@ const respondError = (res, errorCode, message = 'Unknown error') => {
     message,
   });
 };
+
 module.exports.respondError = respondError;
+
+// Validate and extract POST /rides request data
 module.exports.getRideRequestData = (req) => {
   const startLatitude = Number(req.body.start_lat);
   const startLongitude = Number(req.body.start_long);

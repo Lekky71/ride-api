@@ -18,15 +18,8 @@ describe('initDbObject for sqlite.async module', () => {
 const app = require('../src/app')(db);
 const buildSchemas = require('../src/schemas');
 
-const testPayload = {
-  start_lat: -90,
-  start_long: -180,
-  end_lat: 90,
-  end_long: 180,
-  rider_name: 'Hashcode',
-  driver_name: 'Leke',
-  driver_vehicle: 'Benz',
-};
+const testPayload = require('./mock.data');
+
 const VALIDATION_ERROR = 'VALIDATION_ERROR';
 
 describe('API tests', () => {

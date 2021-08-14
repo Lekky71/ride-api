@@ -1,16 +1,7 @@
 const { expect } = require('chai');
 
 const { getRideRequestData } = require('../src/helpers/helper');
-
-const testPayload = {
-  start_lat: -90,
-  start_long: -180,
-  end_lat: 90,
-  end_long: 180,
-  rider_name: 'Hashcode',
-  driver_name: 'Leke',
-  driver_vehicle: 'Benz',
-};
+const testPayload = require('./mock.data');
 
 describe('Test getRideRequestData', () => {
   describe('POST /rides', () => {
