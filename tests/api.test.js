@@ -5,7 +5,15 @@ const assert = require('assert');
 const sqlite3 = require('sqlite3').verbose();
 const { expect } = require('chai');
 
-const db = new sqlite3.Database(':memory:');
+const database = new sqlite3.Database(':memory:');
+const db = require('../src/database/sqlite.async');
+
+describe('initDbObject for sqlite.async module', () => {
+  it('should return a db object', async () => {
+    db.initDbObject(database);
+    expect(db.getDbObject()).to.equal(database);
+  });
+});
 
 const app = require('../src/app')(db);
 const buildSchemas = require('../src/schemas');
@@ -23,7 +31,7 @@ const VALIDATION_ERROR = 'VALIDATION_ERROR';
 
 describe('API tests', () => {
   before((done) => {
-    db.serialize((err) => {
+    database.serialize((err) => {
       if (err) {
         return done(err);
       }

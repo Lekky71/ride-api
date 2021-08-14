@@ -10,7 +10,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "DEBUG=true nyc mocha tests --exit --inspect=0.0.0.0:9229 --timeout 120000",
+    "test": "DEBUG=true nyc mocha tests --exit --inspect=0.0.0.0:9229 --timeout 2000",
     "start": "node index.js"
   },
   "keywords": [
