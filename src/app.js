@@ -22,6 +22,8 @@ module.exports = (db) => {
 
   app.post('/rides', jsonParser, async (req, res) => {
     const requestData = getRideRequestData(req);
+    // The function above either returns an array of values to be inserted
+    // or a CustomError object
     if (!Array.isArray(requestData)) {
       return respondError(res, requestData.code, requestData.message);
     }

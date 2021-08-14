@@ -18,12 +18,12 @@ The goal of these exercises are to assess your proficiency in software engineeri
 
 Below will be your set of tasks to accomplish. Please work on each of these tasks in order. Success criteria will be defined clearly for each task
 
-1. [Documentation](#documentation)
-2. [Implement Tooling](#implement-tooling)
-3. [Implement Pagination](#implement-pagination)
-4. [Refactoring](#refactoring)
-5. [Security](#security)
-6. [Load Testing](#load-testing)
+1. [Documentation](#documentation) &#9745;
+2. [Implement Tooling](#implement-tooling) &#9745;
+3. [Implement Pagination](#implement-pagination) &#9745;
+4. [Refactoring](#refactoring) &#9745;
+5. [Security](#security) &#9745;
+6. [Load Testing](#load-testing) &#9745;
 
 ### Documentation
 
