@@ -63,7 +63,10 @@ paths:
         - users
       summary: add a ride into the database
       operationId: addRide
-      description: add a ride into the database
+      description: "add a ride into the database
+      `start_lat` and `start_long` must be between -90 - 90 and -180 to 180 degrees respectively.
+      `end_lat` and `end_long` must be between -90 - 90 and -180 to 180 degrees respectively.
+      `rider_name`, `driver_name`, `driver_vehicle` should be non empty strings."
       responses:
         '200':
           description: search results matching criteria
