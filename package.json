@@ -10,6 +10,7 @@
     "test": "tests"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "test": "DEBUG=true nyc mocha tests --exit --inspect=0.0.0.0:9229 --timeout 2000",
     "start": "node index.js"
   },
@@ -18,22 +19,28 @@
   ],
   "author": "Bo",
   "license": "ISC",
+  "resolutions": {
+    "node-gyp": "8.1.0"
+  },
   "dependencies": {
     "body-parser": "1.19.0",
+    "compression": "1.7.4",
     "express": "4.16.4",
+    "helmet": "4.6.0",
     "sqlite3": "5.0.2",
     "swagger-ui-express": "4.1.6",
     "winston": "3.3.3",
     "yamljs": "0.3.0"
   },
   "devDependencies": {
+    "chai": "4.3.4",
     "eslint": "7.32.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-plugin-import": "2.24.0",
     "mocha": "9.0.3",
+    "npm-force-resolutions": "0.0.10",
     "nyc": "15.1.0",
     "pre-push": "0.1.1",
-    "supertest": "4.0.2",
-    "chai": "4.3.4"
+    "supertest": "4.0.2"
   }
 }

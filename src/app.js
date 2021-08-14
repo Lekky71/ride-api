@@ -47,7 +47,7 @@ module.exports = (db) => {
       if (totalCount === 0) {
         return respondError(res, 404, 'Could not find any rides');
       }
-      const rows = await db.all(`SELECT * FROM Rides LIMIT ${size} OFFSET ${(page * size) - size};`);
+      const rows = await db.all('SELECT * FROM Rides LIMIT ? OFFSET ?;', [size, (page * size) - size]);
       return res.send({
         page,
         size,
@@ -64,7 +64,12 @@ module.exports = (db) => {
 
   app.get('/rides/:id', async (req, res) => {
     try {
-      const rows = await db.all(`SELECT * FROM Rides WHERE rideID=${Number(req.params.id)} LIMIT 1`);
+      const { id } = req.params;
+      if (Number.isNaN(id) || !Number.isInteger(Number(id)) || Number(id) < 1) {
+        return respondError(res, 400, 'Invalid id, must be an integer greater than 0');
+      }
+
+      const rows = await db.all('SELECT * FROM Rides WHERE rideID = ? LIMIT 1', Number(id));
       if (rows.length === 0) {
         return respondError(res, 404, 'Could not find the ride');
       }
